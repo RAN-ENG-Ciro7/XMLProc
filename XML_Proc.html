@@ -1,0 +1,49 @@
+<html>
+    <title>
+        NOKIA XML_Proc - Program Launcher
+    </title>
+    <body>
+        <h1>NOKIA XML 2G/3G CM FILES PROCESSING</h1>
+        <p style='font-family:times-new-roman;font-size:18px'>
+            This program takes as input an XML file containing the network and decodes it, converting the contents into tables (one per object) and 
+            writing those tables into an Excel file.
+            At the moment, it only supports Nokia Netact 2G and 3G XML files.
+            <br>
+        </p>
+        <br>
+        <h1>CONFIGURATION PARAMETERS</h1>
+        <!-- Using HTML input and forms method -->
+        <form enctype="multipart/form-data" method='post' action='src/XML_Proc_v2.0.py'>
+            <h2>1) XML FILE TO DECODE:</h2>
+    	    <label for="xmlfile">Choose a file:</label>
+    	    <input type="file"
+    	    	id="xmlfile" name="xmlfile" value""
+    	    	accept="text/xml">
+            <br>
+            <br>
+            <b>Note:</b> the output file will be stored in the same folder than the input file, and with the same name, but with '_EXCEL' suffix and 'xlsx' file extension.
+            <br>
+            <br>
+            <br>
+            <h2>2) LIST OF TABLES TO DECODE AND EXTRACT:</h2>
+            <input type='text' name='listoftables' value='' size='75'>
+            <label for='listoftables'> List of tables (MOs) to decode (list of comma-separated table names)</label>
+            <br>
+            <br>
+            <b>Note:</b> Leave the field empty to decode all the tables present in the XML file.
+            <br>
+            <br>
+            <b>Note:</b> Input example for 2G: <i>BSC,BCF,BTS,TRX</i>
+            <br>
+            <br>
+            <b>Note:</b> Input example for 3G: <i>RNC,WBTS,WCEL</i>
+            <br>
+            <br>
+            <br>
+            <br>
+            <input type='submit' value='DECODE XML'>
+            <br>
+            <br>
+        </form>
+    </body>
+</html>
