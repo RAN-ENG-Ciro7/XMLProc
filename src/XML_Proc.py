@@ -22,6 +22,7 @@ import os
 import sys
 import pandas as pd
 import numpy as np
+import gzip
 import inspect
 # Importing the 'cgi' module
 import cgi
@@ -37,7 +38,8 @@ DEBUG = False
 NON_DEBUG = False
 # OUTPUT FOLDERS:
 DEFAULT_OUT_FOLDER = "/home/refarmingnokia/www/DATA/_scripts_output/"
-BACKUP_OUT_FOLDER = "../output/"
+BACKUP_OUT_FOLDER = "/home/refarmingnokia/www/SCRIPTS/XML_Proc_v2.0/output/"
+DEFAULT_LOCAL_FOLDER = "/home/refarmingnokia/www/DATA/_scripts_input/"
 # CONFIGURABLE PARAMETERS - READ FROM THE HTML USER INTERFACE LAUNCH FILE, AS SPECIFIED BY THE USER:
 # Start the HTML content printing:
 print("Content-type: text/html\r\n\r\n")
@@ -118,6 +120,34 @@ print("<script>window.scrollTo(0,document.body.scrollHeight);</script>")
 #else:
 #    # This is a relative path, we need to go up one level in the filename:
 #    output_file = "../"+output_file
+
+# STORE THE FILE LOCALLY AND RELOAD FOR READING:
+# Store the file locally:
+local_file = DEFAULT_LOCAL_FOLDER + nombre_fichero
+full_contents = fichero_form.read()
+tmp_out_file = open(local_file, "wb")
+tmp_out_file.write(full_contents)
+fichero_form.close
+tmp_out_file.close()
+# Checking for compression:
+try:
+    with gzip.open(local_file, 'rb') as f:
+        f.readline()
+        f.close()
+    file_type = 'gzip'
+except:
+    with gzip.open(local_file, 'rb') as f:
+        f.readline()
+        f.close()
+    file_type = 'plain'
+# Reopening the local file for reading:
+if file_type == 'gzip':
+    print("Compressed file found.<br>")
+    fichero = gzip.open(local_file, 'rb')
+else:
+    print("Uncompressed file found.<br>")
+    fichero = open(local_file, 'rb')
+
 
 #################################################################################################
 # FUNCTION DEFINITIONS
@@ -238,9 +268,8 @@ tables_dict = {}
 in_mo = False
 in_list = False
 in_item = False
-with fichero_form:
-#with open(nombre_fichero, 'rb') as fichero:
-    for file_line in fichero_form:
+with fichero:
+    for file_line in fichero:
         if DEBUG == True:
             if num_line <= MAX_LINES_TO_SHOW:
                 print("DEBUG --- PROCESSING LINE %d ...<br>" %num_line)
@@ -630,6 +659,10 @@ for clave in tables_df_dict.keys():
     print("Table %s - %d elements<br>" %(clave,tables_df_dict[clave].shape[0]))
     print("<script>window.scrollTo(0,document.body.scrollHeight);</script>")
 
+# CLOSE THE LOCAL FILE AND DELETE IT
+fichero.close()
+os.remove(local_file)
+
 
 #################################################################################################
 # WRITE TABLES TO EXCEL OUTPUT FILE
@@ -680,6 +713,9 @@ else:
     print("Output file generated: %s<br>" %backup_output_file)
 print("<script>window.scrollTo(0,document.body.scrollHeight);</script>")
 print("<br>")
+print("**IMPORTANT**: REMEMBER TO CHECK FOR POTENTIAL CELLNAMES STARTING WITH '=' !!<br>")
+print("<br>")
+print("<script>window.scrollTo(0,document.body.scrollHeight);</script>")
 print("<br>")
 print("--- END OF PROGRAM --- SUCCESS<br><br>")
 print("<br>")

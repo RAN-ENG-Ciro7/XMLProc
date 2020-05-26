@@ -13,12 +13,10 @@
         <br>
         <h1>CONFIGURATION PARAMETERS</h1>
         <!-- Using HTML input and forms method -->
-        <form enctype="multipart/form-data" method='post' action='src/XML_Proc_v2.0.py'>
+        <form enctype="multipart/form-data" method='post' action='../../cgi-bin/XML_Proc_v2.0.py'>
             <h2>1) XML FILE TO DECODE:</h2>
-    	    <label for="xmlfile">Choose a file:</label>
-    	    <input type="file"
-    	    	id="xmlfile" name="xmlfile" value""
-    	    	accept="text/xml">
+    	    <label for="xmlfile">Choose a file (both '.xml' and '.gz' files are allowed):</label>
+    	    <input type="file" id="xmlfile" name="xmlfile" value="">
             <br>
             <br>
             <b>Note:</b> the output file will be stored in the same folder than the input file, and with the same name, but with '_EXCEL' suffix and 'xlsx' file extension.
