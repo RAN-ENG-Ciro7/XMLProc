@@ -136,7 +136,7 @@ try:
         f.close()
     file_type = 'gzip'
 except:
-    with gzip.open(local_file, 'rb') as f:
+    with open(local_file, 'rb') as f:
         f.readline()
         f.close()
     file_type = 'plain'
